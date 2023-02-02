@@ -11,7 +11,7 @@ class Player():
 			self.positions = [starting_positions.pop()]
 		else:
 			self.positions = [starting_position]
-		## karrtice su redom TAX, BUS, UDG, INV, X2
+		## kartice su redom TAX, BUS, UDG, RVR, X2
 		self.cards = [0] * 5
 	
 	

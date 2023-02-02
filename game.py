@@ -8,11 +8,10 @@ class Game():
 	def __init__(self, detectives, mrx, board):
 		self.detectives = detectives
 		self.mrx = mrx
-		self.players = detectives + [mrx]
+		self.players = [mrx] + detectives
 		self.board = board
 		self.turn = 0
 		self.round = 1
-		print(board.boards)
 	
 	def is_over(self):
 		if self.round >= MAX_ROUNDS:
@@ -30,8 +29,54 @@ class Game():
 	def print_moves(self):
 		print("Moves: [TAX, BUS, UDG, RVR, X2]")
 		player = self.players[self.turn]
-		print(f"{player.name} possible moves: {get_possible_moves(player, self)}, cards: {player.cards}")
+		print(f"{player.name} possible moves: {self.get_legal_moves(player)}, cards: {player.cards}")
+		pass
 	
+	def get_legal_moves(self, player, position=None):
+		tax = self.get_moves_by_vehicle(player, 0, position)
+		bus = self.get_moves_by_vehicle(player, 1, position)
+		udg = self.get_moves_by_vehicle(player, 2, position)
+		if isinstance(player, MrX):
+			rvr = self.get_moves_by_vehicle(player, 3, position)
+			rvr = list(set(tax + bus + udg + rvr))
+		else:
+			rvr = []
+		x2 = []
+		if position is None and isinstance(player, MrX):
+			if (player.cards[4]):
+				x2 = [tax, bus, udg, rvr]
+				## list compreshensions because it's faster
+				## get all legal moves for a first move for all moves using all vehicles
+				x2 = [[self.get_legal_moves(player, move) for move in vehicle] for vehicle in x2]
+				## the format of x2: [TAX, BUS, UDG, RVR, X2], where X2 is always empty
+				## TAX, BUS, UDG and RVR contain of lists for each possible first move and
+				## every of those lists contain possible second moves in the same order as x2
+		moves = [tax, bus, udg, rvr, x2]
+		return moves
+
+	def get_moves_by_vehicle(self, player, vehicle_idx, position = None):
+		if position is None:
+			position = player.positions[-1]
+		boards = copy.deepcopy(self.board.boards)
+		legal_moves = []
+		if player.cards[vehicle_idx]:
+			legal_moves = boards[vehicle_idx][position]
+		for detective in self.detectives:
+			detective_position = detective.positions[-1]
+			if detective_position in legal_moves:
+				legal_moves.remove(detective_position)
+		return legal_moves
+	
+	def make_move(self, player, vehicle, position):
+		moves = self.get_legal_moves(player)
+		player.move(vehicle, position, moves, self)
+		
+	def make_move_x2(self, player, vehicles, position):
+		## napraviti da radi
+		## !!!!!!!!!!!!!!!!!
+		moves = self.get_legal_moves(player)
+		player.move(vehicles, position, moves, self)
+
 	def play(self):
 		player = self.players[self.turn]
 		if (sum(player.cards) == 0):
@@ -40,68 +85,24 @@ class Game():
 		## nacin inputa -> "vrsta transportacije" "nova pozicija"
 		## npr: TAX 1
 		player_move = input(f"{player.name} move: ")
-		[vehicle, position] = player_move.split()
-		position = int(position)
-		vehicle = vehicle_to_idx[vehicle]
-		# print(f"\n\n{vehicle}, {position}\n\n")
-		make_move(player, vehicle, position, self)
-
-		self.turn += 1
-		self.turn %= len(self.players)
-		if (self.turn == 0):
-			self.round += 1
-
-
-def get_moves_by_vehicle(player, vehicle_idx, game):
-	boards = copy.deepcopy(game.board.boards)
-	# print(boards)
-	possible_moves = []
-	if player.cards[vehicle_idx]:
-		possible_moves = boards[vehicle_idx][player.positions[-1]]
-	# print("\n", vehicle_idx, possible_moves)
-	for detective in game.detectives:
-		detective_position = detective.positions[-1]
-		# print("dp:", detective_position, end="")
-		if detective_position in possible_moves:
-			possible_moves.remove(detective_position)
-	return possible_moves
-
-
-def get_possible_moves(player, game, position=None):
-	if position is None:
-		tax = get_moves_by_vehicle(player, 0, game)
-		bus = get_moves_by_vehicle(player, 1, game)
-		udg = get_moves_by_vehicle(player, 2, game)
-		if isinstance(player, MrX):
-			rvr = get_moves_by_vehicle(player, 3, game)
-			rvr = list(set(tax + bus + udg + rvr))
+		vehicle = player_move.split()[0]
+		if vehicle == "X2":
+			if isinstance(player, MrX):
+				## dodati da radi
+				## !!!!!!!!!!!!!!
+				pass
+			else:
+				raise Exception(f"Player {player.name} can't use the X2 move!")
 		else:
-			rvr = []
-		x2 = []
-		if isinstance(player, MrX):
-			if (player.cards[4]):
-				## treba implementirat
-				## !!!!!!!!!!!!!!!!!!!
-				x1 = [tax, bus, udg, rvr]
-				# for move in x1:
-				# 	get_possible_moves(player, game, move)
-				x2 = []
-		moves = [tax, bus, udg, rvr, x2]
-		return moves
-	else:
-		##
-		pass
+			[vehicle, position] = player_move.split()
+			position = int(position)
+			vehicle = vehicle_to_idx[vehicle]
+			self.make_move(player, vehicle, position)
 
-
-def make_move(player, vehicle, position, game):
-	## limitirat kretanje mrxa na polja na kojima su detektivi
-	## i detektiva isto lol
-	## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	moves = get_possible_moves(player, game)
-	if (vehicle in range(4)):
-		player.move(vehicle, position, moves, game)
-	if (vehicle == 4):
-		pass
+			self.turn += 1
+			self.turn %= len(self.players)
+			if (self.turn == 0):
+				self.round += 1
 
 
 def main():
