@@ -1,50 +1,46 @@
 from random import shuffle
+from constants import *
 
 starting_positions = [1, 2, 3, 4, 5]
 
-## broj kartica je isto trentuno harcodean al to se moze promijeniti
-## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-DETECTIVE_TAX = 10
-DETECTIVE_BUS = 8
-DETECTIVE_UDG = 4
-MRX_TAX = 4
-MRX_BUS = 3
-MRX_UDG = 2
-MRX_INVISIBLE = 5
-MRX_X2 = 2
-
 class Player():
-	def __init__(self, name=""):
+	def __init__(self, name="", starting_position=None):
 		self.name = name
-		shuffle(starting_positions)
-		self.positions = [starting_positions.pop()]
-		self.tax_cards = 0
-		self.bus_cards = 0
-		self.udg_cards = 0
-		self.invisible_cards = 0
-		self.x2_cards = 0
+		if starting_position is None:
+			shuffle(starting_positions)
+			self.positions = [starting_positions.pop()]
+		else:
+			self.positions = [starting_position]
+		## karrtice su redom TAX, BUS, UDG, INV, X2
+		self.cards = [0] * 5
+	
+	
+	def move(self, vehicle, position, moves, game):
+		if position in moves[vehicle]:
+			self.positions.append(position)
+			self.cards[vehicle] -= 1
+			if isinstance(self, Detective):
+				game.mrx.cards[vehicle] += 1
+		else:
+			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")
 
-## jel potrebno imat posebne klase za detektive i mr x
-## tj. jel mr x treba neke posebne metode/atribute
-## myb stavit brojeve kartica kao argumente u init od Playera
-## ???????????????????????????????????????????????????
 
 class Detective(Player):
-	def __init__(self, name=""):
-		super(Detective, self).__init__(name)
-		self.tax_cards = DETECTIVE_TAX
-		self.bus_cards = DETECTIVE_BUS
-		self.udg_cards = DETECTIVE_UDG
+	def __init__(self, name="", starting_position=None):
+		super(Detective, self).__init__(name, starting_position)
+		self.cards[0] = DETECTIVE_TAX
+		self.cards[1] = DETECTIVE_BUS
+		self.cards[2] = DETECTIVE_UDG
 
 
 class MrX(Player):
-	def __init__(self, name=""):
-		super(MrX, self).__init__(name)
-		self.tax_cards = MRX_TAX
-		self.bus_cards = MRX_BUS
-		self.udg_cards = MRX_UDG
-		self.invisible_cards = MRX_INVISIBLE
-		self.x2_cards = MRX_X2
+	def __init__(self, name="", starting_position=None):
+		super(MrX, self).__init__(name, starting_position)
+		self.cards[0] = MRX_TAX
+		self.cards[1] = MRX_BUS
+		self.cards[2] = MRX_UDG
+		self.cards[3] = MRX_RVR
+		self.cards[4] = MRX_X2
 
 
 def main():

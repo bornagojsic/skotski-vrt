@@ -1,10 +1,13 @@
+from constants import *
+
 class Board():
 	def __init__(self, tax_filename="", bus_filename="", udg_filename="", rvr_filename=""):
-		self.tax = read_board(tax_filename)
-		self.bus = read_board(bus_filename)
-		self.udg = read_board(udg_filename)
+		tax = read_board(tax_filename)
+		bus = read_board(bus_filename)
+		udg = read_board(udg_filename)
 		## rvr kao river
-		self.rvr = read_board(rvr_filename)
+		rvr = read_board(rvr_filename)
+		self.boards = [tax, bus, udg, rvr]
 
 ## myb stavit u klasu ak nam kasnije nece trebat
 ## ?????????????????????????????????????????????
@@ -14,8 +17,8 @@ def read_board(filename):
 
 	## za sad cemo hardcodeat al kasnije promijenit myb
 	## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!???
-	max_num = 199 + 1
-	board = {index: [] for index in range(1, max_num)}
+	max_station = MAX_STATION + 1
+	board = {index: [] for index in range(1, max_station)}
 	
 	with open(filename, 'r') as f:
 		for line in f:
@@ -38,7 +41,7 @@ def main():
 	bus_filename = "bus.txt"
 	udg_filename = "udg.txt"
 	rvr_filename = "rvr.txt"
-	board = Board(tax_filename, bus_filename, udg_filename)
+	board = Board(tax_filename, bus_filename, udg_filename, rvr_filename)
 
 if __name__ == '__main__':
 	main()
