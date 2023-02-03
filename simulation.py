@@ -11,34 +11,26 @@ class Simulation():
         self.det_wins = 0
 
     def play_random(self, game): #Plays a random move
+        game.turn += 1 #If this was after line 23, the game would get into an infinite loop, initial turn is -1 (line 53)
+        game.turn %= len(game.players)
+        if (game.turn == 0):
+            game.round += 1
+
+        print(game.turn)
+
         player = game.players[game.turn]
-        if (sum(player.cards) == 0):
-            return
 
         moves = game.get_legal_moves(player)
         rnd1 = np.random.randint(0, 4)
-
-        if sum( [len(moves[x]) for x in range (4)] ) == 0: #If there are no moves, the game must end, ugly implementation i know
-            if isinstance(player, MrX):
-                game.detectives[0].positions[-1] = game.mrx.positions[-1] #Mr. X is out of moves -> det win
-                return
-            else:
-                game.round = MAX_ROUNDS #Det is out of moves -> Mr. X win
-                return
-
+        if sum( [len(moves[x]) for x in range (4)] ) == 0: #If there are no legal moves at all, return
+            return
         while len(moves[rnd1]) == 0: #Can't pick a move when there are no moves to pick with that vehicle
             rnd1 = np.random.randint(0, 4)
-        
         rnd2 = np.random.randint(0, len(moves[rnd1]))
         position = moves[rnd1][rnd2]
         vehicle = rnd1
 
         game.make_move(player, vehicle, position)
-
-        game.turn += 1
-        game.turn %= len(game.players)
-        if (game.turn == 0):
-            game.round += 1 
 
     def simulate_game(self, game): #Simulates one game from the starting gamestate (input)
         while not game.is_over():
@@ -52,6 +44,7 @@ class Simulation():
 
     def play_n_randoms(self, n): #Simulates n random games
         for i in range (n):
+            print("-------------------")
             board = Board("tax.txt", "bus.txt", "udg.txt", "rvr.txt")
 
             d1 = Detective("Detective 1")
@@ -60,6 +53,7 @@ class Simulation():
             detectives = [d1, d2]
 
             game = Game(detectives, mrx, board)
+            game.turn = -1 #Because it increments at the beginning (line 14)
             self.simulate_game(game)
 
     def make_chart(self): #Pretty charts
