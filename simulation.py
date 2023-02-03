@@ -16,8 +16,6 @@ class Simulation():
         if (game.turn == 0):
             game.round += 1
 
-        print(game.turn)
-
         player = game.players[game.turn]
 
         moves = game.get_legal_moves(player)
@@ -44,7 +42,6 @@ class Simulation():
 
     def play_n_randoms(self, n): #Simulates n random games
         for i in range (n):
-            print("-------------------")
             board = Board("tax.txt", "bus.txt", "udg.txt", "rvr.txt")
 
             d1 = Detective("Detective 1")
