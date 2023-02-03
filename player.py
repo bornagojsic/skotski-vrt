@@ -5,6 +5,8 @@ starting_positions = [1, 2, 3, 4, 5]
 
 class Player():
 	def __init__(self, name="", starting_position=None):
+		global starting_positions #Bandaid fix jer se lista isprazni, pa ne mogu izvrsiti vise od jedne simulacije
+		
 		self.name = name
 		if starting_position is None:
 			shuffle(starting_positions)
@@ -13,7 +15,8 @@ class Player():
 			self.positions = [starting_position]
 		## kartice su redom TAX, BUS, UDG, RVR, X2
 		self.cards = [0] * 5
-	
+		
+		starting_positions = [1, 2, 3, 4, 5]
 	
 	def move(self, vehicle, position, moves, game):
 		if position in moves[vehicle]:
