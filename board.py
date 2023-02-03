@@ -1,4 +1,6 @@
+import copy
 from constants import *
+
 
 class Board():
 	def __init__(self, tax_filename="", bus_filename="", udg_filename="", rvr_filename=""):
@@ -8,6 +10,9 @@ class Board():
 		## rvr kao river
 		rvr = self.read_board(rvr_filename)
 		self.boards = [tax, bus, udg, rvr]
+		## dodati x2
+		## !!!!!!!!!
+		self.legal_moves = {position: [self.initialize_legal_moves(vehicle_idx, position) for vehicle_idx in range(4) if position in self.boards[vehicle_idx]] for position in range(MAX_STATION + 1)}
 
 	def read_board(slef, filename):
 		## A dictionary is 6.6 times faster than a list when we lookup in 100 items.
@@ -25,6 +30,14 @@ class Board():
 				board[end].append(start)
 		
 		return board
+	
+	def initialize_legal_moves(self, vehicle_idx, position):
+		boards = copy.deepcopy(self.boards)
+		# print(vehicle_idx, position)
+		# print(boards[vehicle_idx])
+		# print(boards[vehicle_idx][position])
+		legal_moves = boards[vehicle_idx][position]
+		return legal_moves
 
 
 def main():
@@ -33,6 +46,7 @@ def main():
 	udg_filename = "udg.txt"
 	rvr_filename = "rvr.txt"
 	board = Board(tax_filename, bus_filename, udg_filename, rvr_filename)
+	print(board.legal_moves)
 
 if __name__ == '__main__':
 	main()

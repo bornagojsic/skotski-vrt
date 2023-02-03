@@ -54,7 +54,7 @@ class Game():
 		moves = [tax, bus, udg, rvr, x2]
 		return moves
 
-	def get_moves_by_vehicle(self, player, vehicle_idx, position = None):
+	""" def get_moves_by_vehicle(self, player, vehicle_idx, position = None):
 		if position is None:
 			position = player.positions[-1]
 		boards = copy.deepcopy(self.board.boards)
@@ -65,7 +65,18 @@ class Game():
 			detective_position = detective.positions[-1]
 			if detective_position in legal_moves:
 				legal_moves.remove(detective_position)
+		return legal_moves """
+	
+	def get_moves_by_vehicle(self, player, vehicle_idx, position = None):
+		if position is None:
+			position = player.positions[-1]
+		legal_moves = []
+		if player.cards[vehicle_idx]:
+			legal_moves = self.board.legal_moves[position][vehicle_idx]
+		detectives_positions = [detective.positions[-1] for detective in self.detectives]
+		legal_moves = [move for move in legal_moves if not move in detectives_positions]
 		return legal_moves
+		
 	
 	def make_move(self, player, vehicle, position):
 		moves = self.get_legal_moves(player)

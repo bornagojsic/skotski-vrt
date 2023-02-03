@@ -43,7 +43,6 @@ class Simulation():
 	def play_n_randoms(self, n): #Simulates n random games
 		board = Board("tax.txt", "bus.txt", "udg.txt", "rvr.txt")
 		for i in range (n):
-
 			d1 = Detective("Detective 1")
 			d2 = Detective("Detective 2")
 			mrx = MrX("Mr. X")
@@ -61,7 +60,7 @@ class Simulation():
 
 def main():
 	# n = int(input())
-	n = 100
+	n = 1000
 	sim = Simulation()
 	sim.play_n_randoms(n)
 	# sim.make_chart()
