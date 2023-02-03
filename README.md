@@ -13,6 +13,6 @@ Re: Mozemo dodati metodu koja generira pocetne pozicije u Simulation() klasu
 4. Zašto simulacije?
 Za početak, izvrstan su način da vidim ima li buggova u samoj implementaciji igre jer će se u tisućama simulacija pojaviti većina rubnih slučajevima koji izazivaju greške. Važniji je razlog, naravno, implementacija MCTS-a (bez heuristike, za početak), ali radim i na drugim RL/ML/algoritamskim metodama koje bi mogle biti dobre za ovo. Budući da sa MCTS-om već imam iskustva, a dosta je moćan,  najlakše mi je početi s tim. 
 
-============================================================================
+===========================================================================
 
 1. Maknuo sam inciijalizaciju boarda iz loopa u play_n_randoms u simulation.py jer se inace fileovi citaju n puta sto nije preznacajno, ali linearno raste vrijeme koje se trosi na citanje (za 100 simulacija mi je bilo 0.06s, a za 1k je bilo 0.5s)
