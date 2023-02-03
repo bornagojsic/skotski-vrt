@@ -5,12 +5,9 @@ starting_positions = [1, 2, 3, 4, 5]
 
 class Player():
 	def __init__(self, name="", starting_position=None):
-		global starting_positions #Bandaid fix jer se lista isprazni, pa ne mogu izvrsiti vise od jedne simulacije
-		
 		self.name = name
 		if starting_position is None:
-			shuffle(starting_positions)
-			self.positions = [starting_positions.pop()]
+			self.get_starting_position()
 		else:
 			self.positions = [starting_position]
 		## kartice su redom TAX, BUS, UDG, RVR, X2
@@ -26,6 +23,13 @@ class Player():
 				game.mrx.cards[vehicle] += 1
 		else:
 			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")
+
+	def get_starting_position(self):
+		global starting_positions #Bandaid fix jer se lista isprazni, pa ne mogu izvrsiti vise od jedne simulacije
+		
+		shuffle(starting_positions)
+		self.positions = [starting_positions[-1]]
+		
 
 
 class Detective(Player):
