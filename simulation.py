@@ -56,7 +56,7 @@ class Simulation():
     def make_chart(self): #Pretty charts
         plt.pie([self.mrx_wins, self.det_wins], labels=["Mr. X wins", "Detectives wins"])
         plt.show()
-        print("Mr. X wins / detectives wins:", self.mrx_wins / self.det_wins)
+        print("Mr. X wins / detectives wins:", self.mrx_wins / (self.det_wins + self.mrx_wins))
 
 
 def main():
