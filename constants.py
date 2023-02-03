@@ -1,7 +1,5 @@
 MAX_STATION = 5
 
-## broj kartica je isto trentuno harcodean al to se moze promijeniti
-## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 DETECTIVE_TAX = 10
 DETECTIVE_BUS = 8
 DETECTIVE_UDG = 4
