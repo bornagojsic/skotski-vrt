@@ -43,14 +43,15 @@ class Game():
 			rvr = []
 		x2 = []
 		if position is None and isinstance(player, MrX):
-			if (player.cards[4]):
+			x2 = self.get_moves_by_vehicle(player, 4, position)
+			""" if (player.cards[4]):
 				x2 = [tax, bus, udg, rvr]
 				## list compreshensions because it's faster
 				## get all legal moves for a first move for all moves using all vehicles
 				x2 = [[self.get_legal_moves(player, move) for move in vehicle] for vehicle in x2]
 				## the format of x2: [TAX, BUS, UDG, RVR, X2], where X2 is always empty
 				## TAX, BUS, UDG and RVR contain of lists for each possible first move and
-				## every of those lists contain possible second moves in the same order as x2
+				## every of those lists contain possible second moves in the same order as x2 """
 		moves = [tax, bus, udg, rvr, x2]
 		return moves
 
@@ -67,19 +68,23 @@ class Game():
 				legal_moves.remove(detective_position)
 		return legal_moves """
 	
-	def get_moves_by_vehicle(self, player, vehicle_idx, position = None):
+	def get_moves_by_vehicle(self, player, vehicle_idx, position=None):
+		if not player.cards[vehicle_idx]:
+			return []
 		if position is None:
 			position = player.positions[-1]
-		legal_moves = []
-		if player.cards[vehicle_idx]:
-			legal_moves = self.board.legal_moves[position][vehicle_idx]
+		legal_moves = self.board.legal_moves[position][vehicle_idx]
+		if vehicle_idx == 4:
+			## ne uzima u obzir pozicije detektiva
+			## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			return legal_moves
 		detectives_positions = [detective.positions[-1] for detective in self.detectives]
 		legal_moves = [move for move in legal_moves if not move in detectives_positions]
 		return legal_moves
 		
 	
 	def make_move(self, player, vehicle, position):
-		moves = self.get_legal_moves(player)
+		moves = self.get_moves_by_vehicle(player, vehicle)
 		player.move(vehicle, position, moves, self)
 		
 	def make_move_x2(self, player, vehicles, position):
