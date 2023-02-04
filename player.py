@@ -1,4 +1,4 @@
-from random import shuffle
+from random import random
 from constants import *
 
 starting_positions = [1, 2, 3, 4, 5]
@@ -6,35 +6,42 @@ starting_positions = [1, 2, 3, 4, 5]
 class Player():
 	def __init__(self, name="", starting_position=None):
 		self.name = name
-		if starting_position is None:
-			self.get_starting_position()
+		""" if starting_position is None:
+			self.set_starting_position()
 		else:
-			self.positions = [starting_position]
+			self.positions = [starting_position] """
+		self.set_starting_position()
 		## kartice su redom TAX, BUS, UDG, RVR, X2
 		self.cards = [0] * 5
-		
-		starting_positions = [1, 2, 3, 4, 5]
 	
 	def move(self, vehicle, position, moves, game):
-		if position in moves[vehicle]:
+		if position in moves:
 			self.positions.append(position)
 			self.cards[vehicle] -= 1
 			if isinstance(self, Detective):
 				game.mrx.cards[vehicle] += 1
 		else:
+			print(moves)
 			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")
 
-	def get_starting_position(self):
-		global starting_positions #Bandaid fix jer se lista isprazni, pa ne mogu izvrsiti vise od jedne simulacije
-		
-		shuffle(starting_positions)
-		self.positions = [starting_positions[-1]]
+	def set_starting_position(self):
+		self.positions = [starting_positions[int(random() * len(starting_positions))]]
+	
+	def set_cards(self):
+		pass
+
+	def reset(self):
+		self.set_starting_position()
+		self.set_cards()
 		
 
 
 class Detective(Player):
 	def __init__(self, name="", starting_position=None):
 		super(Detective, self).__init__(name, starting_position)
+		self.set_cards()
+	
+	def set_cards(self):
 		self.cards[0] = DETECTIVE_TAX
 		self.cards[1] = DETECTIVE_BUS
 		self.cards[2] = DETECTIVE_UDG
@@ -43,6 +50,8 @@ class Detective(Player):
 class MrX(Player):
 	def __init__(self, name="", starting_position=None):
 		super(MrX, self).__init__(name, starting_position)
+	
+	def set_cards(self):
 		self.cards[0] = MRX_TAX
 		self.cards[1] = MRX_BUS
 		self.cards[2] = MRX_UDG
