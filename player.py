@@ -1,4 +1,5 @@
 from random import random
+from copy import deepcopy
 from constants import *
 
 starting_positions = [103, 112, 34, 155, 94, 117, 132, 53, 174, 198, 50, 91, 26, 29, 141, 13, 138, 197]
@@ -6,13 +7,14 @@ starting_positions = [103, 112, 34, 155, 94, 117, 132, 53, 174, 198, 50, 91, 26,
 class Player():
 	def __init__(self, name="", starting_position=None):
 		self.name = name
-		""" if starting_position is None:
+		if starting_position is None:
 			self.set_starting_position()
 		else:
-			self.positions = [starting_position] """
+			self.positions = [starting_position]
 		self.set_starting_position()
 		## kartice su redom TAX, BUS, UDG, RVR, X2
 		self.cards = [0] * 5
+		self.set_cards()
 	
 	def move(self, vehicle, position, moves, game):
 		if position in moves:
@@ -32,7 +34,10 @@ class Player():
 		self.position = starting_positions[int(random() * len(starting_positions))]
 	
 	def set_cards(self):
-		pass
+		if isinstance(self, Detective):
+			self.cards = deepcopy(DETECTIVE_CARDS)
+		else:
+			self.cards = deepcopy(MRX_CARDS)
 
 	def reset(self):
 		self.set_starting_position()
@@ -43,31 +48,17 @@ class Player():
 class Detective(Player):
 	def __init__(self, name="", starting_position=None):
 		super(Detective, self).__init__(name, starting_position)
-		self.set_cards()
-	
-	def set_cards(self):
-		self.cards[0] = DETECTIVE_TAX
-		self.cards[1] = DETECTIVE_BUS
-		self.cards[2] = DETECTIVE_UDG
 
 
 class MrX(Player):
 	def __init__(self, name="", starting_position=None):
 		super(MrX, self).__init__(name, starting_position)
-		self.set_cards()
-	
-	def set_cards(self):
-		self.cards[0] = MRX_TAX
-		self.cards[1] = MRX_BUS
-		self.cards[2] = MRX_UDG
-		self.cards[3] = MRX_RVR
-		self.cards[4] = MRX_X2
-
 
 def main():
-	d1 = Player()
+	d1 = Detective()
 	mrx = MrX()
 	print(d1.position, mrx.position, starting_positions)
+	print(d1.cards, mrx.cards)
 
 
 if __name__ == '__main__':
