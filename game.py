@@ -12,13 +12,14 @@ class Game():
 		self.board = board
 		self.turn = 0
 		self.round = 1
+		self.mrx_positions = []
 	
 	def is_over(self):
 		if self.round >= MAX_ROUNDS:
 			return True
 		
 		for self.detective in self.detectives:
-			if self.detective.positions[-1] == self.mrx.positions[-1]:
+			if self.detective.position == self.mrx.position:
 				return True
 		return False
 	
@@ -57,13 +58,13 @@ class Game():
 
 	""" def get_moves_by_vehicle(self, player, vehicle_idx, position = None):
 		if position is None:
-			position = player.positions[-1]
+			position = player.position
 		boards = copy.deepcopy(self.board.boards)
 		legal_moves = []
 		if player.cards[vehicle_idx]:
 			legal_moves = boards[vehicle_idx][position]
 		for detective in self.detectives:
-			detective_position = detective.positions[-1]
+			detective_position = detective.position
 			if detective_position in legal_moves:
 				legal_moves.remove(detective_position)
 		return legal_moves """
@@ -72,13 +73,13 @@ class Game():
 		if player.cards[vehicle_idx] == 0:
 			return []
 		if position is None:
-			position = player.positions[-1]
+			position = player.position
 		legal_moves = self.board.legal_moves[position][vehicle_idx]
 		if vehicle_idx == 4:
 			## ne uzima u obzir pozicije detektiva
 			## !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			return legal_moves
-		detectives_positions = [detective.positions[-1] for detective in self.detectives]
+		detectives_positions = [detective.position for detective in self.detectives]
 		legal_moves = [move for move in legal_moves if not move in detectives_positions]
 		return legal_moves
 		

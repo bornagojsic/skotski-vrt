@@ -27,7 +27,7 @@ class Player():
 			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")
 
 	def set_starting_position(self):
-		self.positions = [starting_positions[int(random() * len(starting_positions))]]
+		self.position = starting_positions[int(random() * len(starting_positions))]
 	
 	def set_cards(self):
 		pass
@@ -64,7 +64,7 @@ class MrX(Player):
 def main():
 	d1 = Player()
 	mrx = MrX()
-	print(d1.positions[0], mrx.positions[0], starting_positions)
+	print(d1.position, mrx.position, starting_positions)
 
 
 if __name__ == '__main__':
