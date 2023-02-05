@@ -43,7 +43,7 @@ class Game():
 			rvr = []
 		x2 = []
 		if position is None and isinstance(player, MrX):
-			x2 = self.get_moves_by_vehicle(player, 4, position)
+			# x2 = self.get_moves_by_vehicle(player, 4, position)
 			""" if (player.cards[4]):
 				x2 = [tax, bus, udg, rvr]
 				## list compreshensions because it's faster
@@ -69,7 +69,7 @@ class Game():
 		return legal_moves """
 	
 	def get_moves_by_vehicle(self, player, vehicle_idx, position=None):
-		if not player.cards[vehicle_idx]:
+		if player.cards[vehicle_idx] == 0:
 			return []
 		if position is None:
 			position = player.positions[-1]
