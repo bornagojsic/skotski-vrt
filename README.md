@@ -1,5 +1,5 @@
 # skotski-vrt
-Bebi + Borna = jedan od AI-jeva za Škotski vrt ikad
+jedan od AI-jeva za Škotski vrt ikad
 
 U README ću pisat noteove tako da možes pogledati kad ti odgovara.
 1. line 63 u game.py - jesi li siguran da ovo nije pass po referenci (ne stvara deepcopy). Točnije, treba provjeriti, kada brišeš pozicije u legal_moves na kojima su već detektivi (sljedećih par linija), brišu li se i elementi originalnog grafa. Ako odradim ostale stvari, to ću možda ja napraviti danas kroz dan.
