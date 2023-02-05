@@ -54,6 +54,7 @@ class Detective(Player):
 class MrX(Player):
 	def __init__(self, name="", starting_position=None):
 		super(MrX, self).__init__(name, starting_position)
+		self.set_cards()
 	
 	def set_cards(self):
 		self.cards[0] = MRX_TAX
