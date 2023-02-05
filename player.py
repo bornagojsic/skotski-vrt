@@ -16,13 +16,13 @@ class Player():
 	
 	def move(self, vehicle, position, moves, game):
 		if position in moves:
-			self.positions.append(position)
+			self.position = position
 			self.cards[vehicle] -= 1
 			if isinstance(self, Detective):
 				game.mrx.cards[vehicle] += 1
 		else:
 			print(moves)
-			print(self.positions)
+			print(self.position)
 			print(game.board.legal_moves)
 			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")
 

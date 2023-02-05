@@ -25,7 +25,7 @@ class Game():
 	
 	def print_positions(self):
 		for player in self.players:
-			print(f"{player.name} positions: {player.positions}")
+			print(f"{player.name} positions: {player.position}")
 	
 	def print_moves(self):
 		print("Moves: [TAX, BUS, UDG, RVR, X2]")
