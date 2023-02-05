@@ -1,7 +1,7 @@
 from random import random
 from constants import *
 
-starting_positions = [1, 2, 3, 4, 5]
+starting_positions = [103, 112, 34, 155, 94, 117, 132, 53, 174, 198, 50, 91, 26, 29, 141, 13, 138, 197]
 
 class Player():
 	def __init__(self, name="", starting_position=None):
