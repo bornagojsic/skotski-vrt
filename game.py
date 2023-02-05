@@ -34,6 +34,8 @@ class Game():
 		pass
 	
 	def get_legal_moves(self, player, position=None):
+		if (sum(player.cards)) == 0:
+			return player.position
 		tax = self.get_moves_by_vehicle(player, 0, position)
 		bus = self.get_moves_by_vehicle(player, 1, position)
 		udg = self.get_moves_by_vehicle(player, 2, position)
