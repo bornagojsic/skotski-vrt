@@ -22,6 +22,8 @@ class Player():
 				game.mrx.cards[vehicle] += 1
 		else:
 			print(moves)
+			print(self.cards)
+			print(game.get_moves_by_vehicle(self, vehicle))
 			print(self.position)
 			print(game.board.legal_moves)
 			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")

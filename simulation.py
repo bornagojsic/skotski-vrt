@@ -27,7 +27,7 @@ class Simulation():
 			# print(moves)
 			# [print(player.positions) for player in game.players]
 			return
-		while len(moves[rnd1]) == 0: #Can't pick a move when there are no moves to pick with that vehicle
+		while len(moves[rnd1]) == 0 or player.cards[rnd1] == 0: #Can't pick a move when there are no moves to pick with that vehicle
 			rnd1 = int(random() * 4)
 		rnd2 = int(random() * len(moves[rnd1]))
 		position = moves[rnd1][rnd2]
@@ -74,7 +74,7 @@ def main():
 	n = int(1e5)
 	sim = Simulation()
 	sim.play_n_randoms(n)
-	sim.make_chart()
+	# sim.make_chart()
 
 if __name__ == '__main__':
 	main()
