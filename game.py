@@ -48,7 +48,7 @@ class Game():
 		tax = self.get_moves_by_vehicle(player, 0, position)
 		bus = self.get_moves_by_vehicle(player, 1, position)
 		udg = self.get_moves_by_vehicle(player, 2, position)
-		if isinstance(player, MrX):
+		if isinstance(player, MrX) and player.cards[3] != 0:
 			rvr = self.get_moves_by_vehicle(player, 3, position)
 			rvr = list(set(tax + bus + udg + rvr))
 		else:
@@ -64,7 +64,7 @@ class Game():
 				## the format of x2: [TAX, BUS, UDG, RVR, X2], where X2 is always empty
 				## TAX, BUS, UDG and RVR contain of lists for each possible first move and
 				## every of those lists contain possible second moves in the same order as x2 """
-		moves = [tax, bus, udg, rvr, x2]
+		moves = [tax, bus, udg, rvr]
 		return moves
 
 	""" def get_moves_by_vehicle(self, player, vehicle_idx, position = None):
