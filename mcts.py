@@ -6,7 +6,7 @@ from game import Game
 from simulation import Simulation
 from copy import deepcopy
 
-NUM_ITERS = 1000
+NUM_ITERS = 10000
 
 class Node():
 
@@ -157,7 +157,6 @@ def main():
     mcts = MCTS(NUM_ITERS, game)
     mcts.create_root_node()
     mcts.search(NUM_ITERS)
-    print(mcts.tree[0].legal_moves)
 
 if __name__ == '__main__':
     main()
