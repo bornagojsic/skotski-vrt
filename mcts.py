@@ -6,7 +6,7 @@ from game import Game
 from simulation import Simulation
 from copy import deepcopy
 
-NUM_ITERS = 10000
+NUM_ITERS = 1000
 
 class Node():
 
@@ -122,6 +122,22 @@ class MCTS():
         self.tree[0] = Node(self.game, 0, None, None, None)
         self.tree[0].visits = 1
 
+    def print_evaluations(self, node, vehicle, position): #Prints it out like a nice table
+        visits = [self.tree[x].visits for x in node.children]
+        wins = [self.tree[x].wins for x in node.children]
+        moves = node.legal_moves
+
+        flattened_moves = []
+        for veh, movelist in enumerate(moves):
+            for move in movelist:
+                flattened_moves.append([idx_to_vehicle[veh], move])
+
+        print(f"{'Move':^10}{'Visits':>10}{'Winrate':>10}")
+        for i, move in enumerate(flattened_moves):
+            print(f"{move[0]:5}{move[1]:5d}{visits[i]:10d}{wins[i]/visits[i]:10f}")
+
+        print("Best move:", idx_to_vehicle[vehicle], position)
+
     def search(self, num_iters): # Oh yeah, it's all coming together
         self.create_root_node()
         node = self.tree[0]
@@ -134,14 +150,12 @@ class MCTS():
         node = self.tree[0]
         
         weights = [self.tree[x].visits for x in node.children]
-        print("Weights:", weights)
-        
         weights2 = [self.tree[x].wins for x in node.children]
-        print("Wins:", weights2)
         
         node = self.tree[node.children[np.argmax(weights)]] #Selects the most-visited child
         vehicle = node.parent_move_x
         position = self.tree[0].legal_moves[node.parent_move_x][node.parent_move_y] #Gets the move which leads to said child
+        self.print_evaluations(self.tree[node.parent_ind], vehicle, position)
         return [vehicle, position]
         
 
@@ -154,9 +168,7 @@ def main():
     game = Game(detectives, mrx, board)
     game.turn = 0
     mcts = MCTS(NUM_ITERS, game)
-
-    print(mcts.search(NUM_ITERS))
-    print(mcts.tree[0].legal_moves)
+    mcts.search(NUM_ITERS)
 
 if __name__ == '__main__':
     main()
