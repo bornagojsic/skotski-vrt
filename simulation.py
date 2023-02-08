@@ -74,7 +74,7 @@ def main():
 	n = int(1e5)
 	sim = Simulation()
 	sim.play_n_randoms(n)
-	# sim.make_chart()
+	sim.make_chart()
 
 if __name__ == '__main__':
 	main()
