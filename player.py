@@ -3,6 +3,7 @@ from copy import deepcopy
 from constants import *
 
 starting_positions = [103, 112, 34, 155, 94, 117, 132, 53, 174, 198, 50, 91, 26, 29, 141, 13, 138, 197]
+taken_positions = {position : 0 for position in starting_positions} #Makes sure two players can't start on the same spot
 
 class Player():
 	def __init__(self, name="", starting_position=None):
@@ -31,7 +32,11 @@ class Player():
 			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")
 
 	def set_starting_position(self):
-		self.position = starting_positions[int(random() * len(starting_positions))]
+		while True: #Makes sure two players can't start at the same spot
+			self.position = starting_positions[int(random() * len(starting_positions))]
+			if not taken_positions[self.position]: 
+				taken_positions[self.position] = 1
+				break
 	
 	def set_cards(self):
 		if isinstance(self, Detective):
