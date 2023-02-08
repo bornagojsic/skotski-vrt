@@ -14,11 +14,13 @@ class Game():
 		self.round = 1
 		self.mrx_positions = []
 		
-	def set_state(self, positions, cards):
+	def set_state(self, positions, cards, turn, round):
 		for ind, player in enumerate(self.players):
 			player.position = positions[ind]
 			for i in range (5):
 				player.cards[i] = cards[ind][i]
+		self.turn = turn
+		self.round = round
 	
 	def is_over(self):
 		if self.round >= MAX_ROUNDS:
@@ -40,8 +42,9 @@ class Game():
 		pass
 	
 	def get_legal_moves(self, player, position=None):
-		if (sum(player.cards)) == 0:
-			return player.position
+		#If I comment this part below, it doesn't crash. Why????
+		"""if (sum(player.cards)) == 0:
+			return player.position"""
 		tax = self.get_moves_by_vehicle(player, 0, position)
 		bus = self.get_moves_by_vehicle(player, 1, position)
 		udg = self.get_moves_by_vehicle(player, 2, position)
