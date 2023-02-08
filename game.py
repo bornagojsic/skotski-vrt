@@ -13,6 +13,12 @@ class Game():
 		self.turn = 0
 		self.round = 1
 		self.mrx_positions = []
+		
+	def set_state(self, positions, cards):
+		for ind, player in enumerate(self.players):
+			player.position = positions[ind]
+			for i in range (5):
+				player.cards[i] = cards[ind][i]
 	
 	def is_over(self):
 		if self.round >= MAX_ROUNDS:
