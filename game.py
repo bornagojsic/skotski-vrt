@@ -31,13 +31,17 @@ class Game():
 				return True
 		return False
 	
-	def print_positions(self):
+	def print_positions(self, hide_mrx=False):
 		for player in self.players:
+			if hide_mrx and isinstance(player, MrX):
+				continue
 			print(f"{player.name} positions: {player.position}")
 	
-	def print_moves(self):
+	def print_moves(self, hide_mrx=False):
 		print("Moves: [TAX, BUS, UDG, RVR, X2]")
 		player = self.players[self.turn]
+		if isinstance(player, MrX) and hide_mrx:
+			return
 		print(f"{player.name} possible moves: {self.get_legal_moves(player)}, cards: {player.cards}")
 		pass
 	
