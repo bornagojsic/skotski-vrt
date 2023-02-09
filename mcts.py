@@ -15,7 +15,7 @@ class Node():
         ##################################### Stores the gamestate ###################################################
         self.positions = [player.position for player in game.players]
         self.cards = [player.cards[:] for player in game.players] #Deepcopy of card lists
-        self.player = game.players[game.turn] 
+        self.player = game.players[game.turn]
         self.turn = game.turn
         self.round = game.round
         self.is_terminal = game.is_over()
@@ -78,7 +78,6 @@ class MCTS():
 
             vehicle = node.flattened_moves[node.nodes_expanded][0]
             position = node.flattened_moves[node.nodes_expanded][1]
-            
             self.game.make_move(node.player, vehicle, position)
             self.game.turn = (self.game.turn + 1) % len(self.game.players)
 
@@ -94,7 +93,7 @@ class MCTS():
     def simulation(self, node):
         self.sim.det_wins = 0
         self.sim.mrx_wins = 0
-        self.game.set_state(node.positions, node.cards, node.turn, node.round) #Sets game state to the one remember in the node
+        self.game.set_state(node.positions, node.cards, node.turn, node.round) #Sets game state to the one remembered in the node
         
         self.sim.simulate_game(self.game)
 
@@ -142,7 +141,6 @@ class MCTS():
         node = self.tree[node.children[np.argmax(weights)]] #Selects the most-visited child
         vehicle = node.parent_move[0]
         position = node.parent_move[1]
-        self.print_evaluations(self.tree[node.parent_ind], vehicle, position)
         return [vehicle, position]
         
 
