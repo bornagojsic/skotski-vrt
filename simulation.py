@@ -59,7 +59,7 @@ class Simulation():
 		for _ in range(n):
 			detectives = [d1, d2]
 			game = Game(detectives, mrx, board)
-			game.turn = -1 # Because it increments at the beginning (line 14)
+			game.turn = -1 # Because it increments at the beginning (line 16)
 			self.simulate_game(game)
 			[player.reset() for player in game.players]
 

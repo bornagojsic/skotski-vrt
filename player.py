@@ -12,23 +12,13 @@ class Player():
 		else:
 			self.positions = [starting_position]
 		self.set_starting_position()
-		## kartice su redom TAX, BUS, UDG, RVR, X2
-		self.cards = [0] * 5
+		## kartice su redom TAX, BUS, UDG, RVR
+		self.cards = [0] * 4
 		self.set_cards()
 	
-	def move(self, vehicle, position, moves, game):
-		if position in moves:
-			self.position = position
-			self.cards[vehicle] -= 1
-			if isinstance(self, Detective):
-				game.mrx.cards[vehicle] += 1
-		else:
-			print(moves)
-			print(self.cards)
-			print(game.get_moves_by_vehicle(self, vehicle))
-			print(self.position)
-			print(game.board.legal_moves)
-			raise Exception(f"{idx_to_vehicle[vehicle]} {position} is not a legal move for {self.name}!")
+	def move(self, vehicle, position):
+		self.position = position
+		self.cards[vehicle] -= 1
 
 	def set_starting_position(self):
 		self.position = starting_positions[int(random() * len(starting_positions))]
